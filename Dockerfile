@@ -1,21 +1,20 @@
 FROM python:3.11-slim
 
-# 1. Install build tools for your O(1) C++ Engine
+# 1. Install build tools
 RUN apt-get update && apt-get install -y g++ build-essential
 
 WORKDIR /app
 
-# 2. Copy all files
+# 2. Copy all files (This includes your engine/ and vocabs/ folders)
 COPY . .
 
-# 3. CRITICAL: Compile the engine to the EXACT name used in api.py
-# Your code uses f'fast_vocab.so', so we name it exactly that.
-RUN g++ -O2 -shared -fPIC -o fast_vocab.so fast_vocab.cpp
+# 3. FIX: Point g++ to the file inside the engine folder
+# We keep the output (-o) in the root so api.py can load it
+RUN g++ -O2 -shared -fPIC -o fast_vocab.so engine/fast_vocab.cpp
 
-# 4. Install dependencies (Ensure scipy==1.12.0 is in requirements.txt)
+# 4. Install dependencies
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Force bind to Render's default port
-# We use 'api:app' assuming your file is named api.py
+# 5. Start command
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "10000"]
