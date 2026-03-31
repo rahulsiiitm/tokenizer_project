@@ -1,5 +1,5 @@
 # Use a Python base image with build tools
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Install C++ compiler
 RUN apt-get update && apt-get install -y g++ build-essential
@@ -12,6 +12,7 @@ RUN g++ -O3 -shared -fPIC -o tokenizer_engine.so fast_vocab.cpp
 
 # Install Python dependencies
 COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy FastAPI app
