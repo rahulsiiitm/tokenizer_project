@@ -32,7 +32,7 @@ except OSError:
 
 # 1. Load all available models dynamically (256K removed)
 models = {}
-vocab_sizes = [8000, 16000, 32000, 64000, 128000] 
+vocab_sizes = [8000, 32000] 
 
 print("Loading standard BPE models...")
 for size in vocab_sizes:
