@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Copy and compile the C++ tokenizer engine
 COPY ./engine/fast_vocab.cpp .
-RUN g++ -O3 -shared -fPIC -o tokenizer_engine.so fast_vocab.cpp
+RUN g++ -O2 -shared -fPIC -o tokenizer_engine.so fast_vocab.cpp
 
 # Install Python dependencies
 COPY requirements.txt .
